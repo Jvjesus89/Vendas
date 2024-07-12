@@ -1,0 +1,26 @@
+unit Vendas.model.ConsultaCliente;
+
+interface
+type TConsultaCliente = class
+  private
+
+  public
+  procedure ConsultaClientePorCodigo;
+  procedure ConsultaClientePorRazao;
+end;
+
+implementation
+
+{ TConsultaCliente }
+
+procedure TConsultaCliente.ConsultaClientePorCodigo;
+begin
+
+end;
+
+procedure TConsultaCliente.ConsultaClientePorRazao;
+begin
+
+end;
+
+end.

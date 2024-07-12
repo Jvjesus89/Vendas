@@ -1,0 +1,65 @@
+unit Vendas.model.ConsultaCliente;
+
+interface
+
+uses Vendas.Utils;
+type TConsultaCliente = class
+  private
+  Fcodigo : integer;
+  Frazao :string;
+  function GetConsultaPorCodigo: Integer;
+  function GetConsultaPorRazao: Integer;
+  public
+  property codigo: integer  read Fcodigo write Fcodigo;
+  property razao: string  read Frazao write Frazao;
+
+  property ConsultaPorCodigo: Integer read GetConsultaPorCodigo;
+  property ConsultaPorRazao: Integer read GetConsultaPorRazao;
+  class function New: TConsultaCliente;
+end;
+
+implementation
+
+{ TConsultaCliente }
+
+uses Vendas.view.page.CadastroVenda, Vendas.view.page.ConsultaCliente;
+
+
+{ TConsultaCliente }
+
+function TConsultaCliente.GetConsultaPorCodigo: Integer;
+begin
+   begin
+   ConsultaCliente.Qcliente.Close;
+   ConsultaCliente.Qcliente.Sql.Clear;
+   ConsultaCliente.Qcliente.Sql.Add('Select * From clientes where razao = :PRazao');
+   ConsultaCliente.Qcliente.ParamByName('Pcodigo').AsInteger := (Fcodigo)  ;
+   ConsultaCliente.Qcliente.Open;
+
+   if ConsultaCliente.Qcliente.RecordCount > 1  then
+    begin
+    ConsultaCliente.ShowModal;
+    end
+    else
+      try
+    CadastroVenda.MVenda.FieldByName('CODCLI').AsInteger := ConsultaCliente.Qcliente.FieldByName('CODCLI').AsInteger ;
+    CadastroVenda.MVenda.FieldByName('codigo').AsInteger := ConsultaCliente.Qcliente.FieldByName('codigo').AsInteger;
+    CadastroVenda.MVenda.FieldByName('razao').AsString := ConsultaCliente.Qcliente.FieldByName('razao').AsString;
+    except
+    CadastroVenda.MVenda.Cancel;
+    raise;
+  end;
+   end;
+end;
+
+function TConsultaCliente.GetConsultaPorRazao: Integer;
+begin
+
+end;
+
+class function TConsultaCliente.New: TConsultaCliente;
+begin
+   Result := TConsultaCliente.Create;
+end;
+
+end.

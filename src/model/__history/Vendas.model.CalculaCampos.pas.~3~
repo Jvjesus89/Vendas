@@ -1,0 +1,34 @@
+unit Vendas.model.CalculaCampos;
+
+interface
+type
+  CalculaTotalVendido = class
+  private
+    valortotal : real;
+    Fqtde : real;
+    Fvalorunit : currency;
+    Fdesconto : currency;
+  public
+    procedure InseriCampoTotalVendido;
+    property qtde: real  read Fqtde write Fqtde;
+    property valorunit: currency  read Fvalorunit write Fvalorunit;
+    property desconto: currency  read Fdesconto write Fdesconto;
+    class function New: CalculaTotalVendido;
+  end;
+
+implementation
+
+{ CalculaTotalVendido }
+
+
+
+{ CalculaTotalVendido }
+
+
+
+class function CalculaTotalVendido.New: CalculaTotalVendido;
+begin
+   result :=   (Fqtde * Fvalorunit)
+end;
+
+end.

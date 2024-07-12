@@ -1,0 +1,86 @@
+unit Vendas.view.principal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Buttons, Vcl.StdCtrls,
+  Vendas.view.page.CadastroVenda, Vendas.view.page.ConsultaVenda, DbPrincipal;
+
+type
+  TVenda = class(TForm)
+    pnlMaster: TPanel;
+    pnlOpcoes: TPanel;
+    pnlCadastraVenda: TPanel;
+    Shape1: TShape;
+    btnCadastraVenda: TSpeedButton;
+    pnlConsultaVenda: TPanel;
+    Shape2: TShape;
+    pnlConsulta: TPanel;
+    edtconsultavenda: TEdit;
+    Panel1: TPanel;
+    Shape3: TShape;
+    btnConsultarVendas: TSpeedButton;
+    procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure btnCadastraVendaClick(Sender: TObject);
+    procedure btnConsultarVendasClick(Sender: TObject);
+  private
+  Procedure  Responsive ;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Venda: TVenda;
+
+implementation
+
+{$R *.dfm}
+
+procedure TVenda.btnCadastraVendaClick(Sender: TObject);
+begin
+   {begin
+    TCadastroVenda.New(Self)
+      .Embed(pnlMaster);
+    end;
+    }
+    CadastroVenda.cadastrarOuEditar := 1;
+   CadastroVenda.Showmodal;
+end;
+
+procedure TVenda.btnConsultarVendasClick(Sender: TObject);
+begin
+ TConsultaVendas.New(Self)
+    .Embed(pnlMaster);
+end;
+
+procedure TVenda.FormResize(Sender: TObject);
+begin
+  Responsive;
+end;
+
+procedure TVenda.FormShow(Sender: TObject);
+begin
+  Responsive;
+
+    try
+    if not Db.DbPrincipal.Connected then
+      Db.DbPrincipal.Open; // Abre a conexão com o banco de dados, se ainda não estiver aberta
+  except
+    on E: Exception do
+      ShowMessage('Erro ao conectar: ' + E.Message);
+  end;
+end;
+
+procedure TVenda.Responsive;
+begin
+  pnlmaster.Padding.Left := Round((Self.Width - pnlmaster.Width) * 7);
+  pnlmaster.Padding.Right := Round((Self.Width - pnlmaster.Width) * 7);
+  pnlmaster.Padding.Top := Round((Self.Height - pnlmaster.Height) * 2);
+  pnlmaster.Padding.Bottom := Round((Self.Height - pnlmaster.Height) * 2);
+  pnlOpcoes.Align := alClient;
+end;
+
+end.

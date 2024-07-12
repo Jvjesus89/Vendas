@@ -1,0 +1,104 @@
+unit Vendas.view.page.ConsultaCliente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, DbPrincipal,
+  Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  Vcl.Grids, Vcl.DBGrids, Vendas.Utils,Vendas.view.page.CadastroVenda;
+
+type
+  TConsultaCliente = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Busca: TEdit;
+    btnBusca: TButton;
+    DBGrid1: TDBGrid;
+    Qcliente: TFDQuery;
+    DsQcliente: TDataSource;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+     class function New(Aowner:TComponent): TConsultaCliente;
+   function Embed(Value:Tpanel):TConsultaCliente;
+    { Public declarations }
+  end;
+
+var
+  ConsultaCliente: TConsultaCliente;
+
+implementation
+
+{$R *.dfm}
+
+procedure TConsultaCliente.DBGrid1DblClick(Sender: TObject);
+begin
+  try
+  begin
+    if not Assigned(CadastroVenda) then
+      raise Exception.Create('CadastroVenda não foi inicializado.');
+
+    // Verifica se Qcliente está ativo e contém registros
+    if not Qcliente.Active then
+      raise Exception.Create('Qcliente não está ativo.');
+    if Qcliente.IsEmpty then
+      raise Exception.Create('Qcliente está vazio.');
+
+    // Verifica se MVenda está inicializado e contém os campos necessários
+    if not Assigned(CadastroVenda.MVenda) then
+      raise Exception.Create('MVenda não foi inicializado.');
+    if not CadastroVenda.MVenda.Active then
+      raise Exception.Create('MVenda não está ativo.');
+
+    // Verifica se os campos existem em ambos os conjuntos de dados
+    if not Qcliente.FieldDefs.IndexOf('CODCLI') >= 0 then
+      raise Exception.Create('Campo CODCLI não encontrado em Qcliente.');
+    if not Qcliente.FieldDefs.IndexOf('codigo') >= 0 then
+      raise Exception.Create('Campo codigo não encontrado em Qcliente.');
+    if not Qcliente.FieldDefs.IndexOf('razao') >= 0 then
+      raise Exception.Create('Campo razao não encontrado em Qcliente.');
+    if not CadastroVenda.MVenda.FieldDefs.IndexOf('CODCLI') >= 0 then
+      raise Exception.Create('Campo CODCLI não encontrado em MVenda.');
+    if not CadastroVenda.MVenda.FieldDefs.IndexOf('codigo') >= 0 then
+      raise Exception.Create('Campo codigo não encontrado em MVenda.');
+    if not CadastroVenda.MVenda.FieldDefs.IndexOf('razao') >= 0 then
+      raise Exception.Create('Campo razao não encontrado em MVenda.');
+  end;
+  CadastroVenda.MVenda.FieldByName('CODCLI').AsInteger := Qcliente.FieldByName('CODCLI').AsInteger;
+  CadastroVenda.MVenda.FieldByName('codigo').AsInteger := Qcliente.FieldByName('codigo').AsInteger;
+  CadastroVenda.MVenda.FieldByName('razao').AsString := Qcliente.FieldByName('razao').AsString;
+  Self.RemoveObject;
+    except
+    CadastroVenda.MVenda.Cancel;
+    raise;
+  end;
+end;
+
+function TConsultaCliente.Embed(Value: Tpanel): TConsultaCliente;
+begin
+ Result:=self;
+ Self.AddObject(value);
+end;
+
+procedure TConsultaCliente.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ Qcliente.Close;
+end;
+
+procedure TConsultaCliente.FormShow(Sender: TObject);
+begin
+ Qcliente.open;
+end;
+
+class function TConsultaCliente.New(Aowner: TComponent): TConsultaCliente;
+begin
+ Result := Self.Create(AOwner);
+end;
+
+end.
