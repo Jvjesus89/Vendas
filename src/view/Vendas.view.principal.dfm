@@ -21,7 +21,7 @@ object Venda: TVenda
     Top = 0
     Width = 925
     Height = 565
-    Align = alClient
+    Align = alBottom
     BevelOuter = bvNone
     Padding.Left = 200
     Padding.Top = 50

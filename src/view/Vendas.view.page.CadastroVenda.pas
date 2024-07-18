@@ -63,29 +63,9 @@ type
     PVendasItens: TDataSetProvider;
     MVendasItens: TClientDataSet;
     DsVendasItens: TDataSource;
-    VendasItensCODVENDA: TIntegerField;
-    VendasItensCODPROD: TIntegerField;
-    VendasItensVALORUNIT: TFMTBCDField;
-    VendasItensDESCONTO: TFMTBCDField;
-    VendasItensVLTOTALITEM: TFMTBCDField;
-    VendasItensCODPROD_1: TIntegerField;
-    VendasItensCODIGO: TIntegerField;
-    VendasItensDESCRICAO: TStringField;
-    VendasItensVLUNIT: TFMTBCDField;
     btnSalvarItem: TSpeedButton;
     pnlQtde: TPanel;
     edtqtde: TDBEdit;
-    MVendasItensCODVENDA: TIntegerField;
-    MVendasItensCODPROD: TIntegerField;
-    MVendasItensVALORUNIT: TFMTBCDField;
-    MVendasItensDESCONTO: TFMTBCDField;
-    MVendasItensVLTOTALITEM: TFMTBCDField;
-    MVendasItensCODPROD_1: TIntegerField;
-    MVendasItensCODIGO: TIntegerField;
-    MVendasItensDESCRICAO: TStringField;
-    MVendasItensVLUNIT: TFMTBCDField;
-    VendasItensQTDE: TFMTBCDField;
-    MVendasItensQTDE: TFMTBCDField;
     edtvltotalitem: TDBEdit;
     Panel12: TPanel;
     Panel13: TPanel;
@@ -94,16 +74,6 @@ type
     btnCancelar: TSpeedButton;
     Panel15: TPanel;
     MVendasItensGrid: TClientDataSet;
-    IntegerField2: TIntegerField;
-    IntegerField3: TIntegerField;
-    FMTBCDField1: TFMTBCDField;
-    FMTBCDField2: TFMTBCDField;
-    FMTBCDField3: TFMTBCDField;
-    IntegerField4: TIntegerField;
-    IntegerField5: TIntegerField;
-    StringField1: TStringField;
-    FMTBCDField4: TFMTBCDField;
-    FMTBCDField5: TFMTBCDField;
     DsMVendasItensGrid: TDataSource;
     DBEdit2: TDBEdit;
     Panel16: TPanel;
@@ -122,6 +92,35 @@ type
     edtdesconto: TDBEdit;
     VendaNUMVENDA: TIntegerField;
     VendaCODVENDA: TIntegerField;
+    MVendaNUMVENDA: TIntegerField;
+    VendasItensCODVENDA: TIntegerField;
+    VendasItensCODPROD: TIntegerField;
+    VendasItensQTDE: TFMTBCDField;
+    VendasItensVLUNIT: TFMTBCDField;
+    VendasItensDESCONTO: TFMTBCDField;
+    VendasItensVLTOTALITEM: TFMTBCDField;
+    VendasItensCODPROD_1: TIntegerField;
+    VendasItensCODIGO: TIntegerField;
+    VendasItensDESCRICAO: TStringField;
+    VendasItensVLUNIT_1: TFMTBCDField;
+    MVendasItensGridCODVENDA: TIntegerField;
+    MVendasItensGridCODPROD: TIntegerField;
+    MVendasItensGridQTDE: TFMTBCDField;
+    MVendasItensGridVLUNIT: TFMTBCDField;
+    MVendasItensGridDESCONTO: TFMTBCDField;
+    MVendasItensGridVLTOTALITEM: TFMTBCDField;
+    MVendasItensGridCODPROD_1: TIntegerField;
+    MVendasItensGridCODIGO: TIntegerField;
+    MVendasItensGridDESCRICAO: TStringField;
+    MVendasItensCODVENDA: TIntegerField;
+    MVendasItensCODPROD: TIntegerField;
+    MVendasItensQTDE: TFMTBCDField;
+    MVendasItensVLUNIT: TFMTBCDField;
+    MVendasItensDESCONTO: TFMTBCDField;
+    MVendasItensVLTOTALITEM: TFMTBCDField;
+    MVendasItensCODPROD_1: TIntegerField;
+    MVendasItensCODIGO: TIntegerField;
+    MVendasItensDESCRICAO: TStringField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnBuscaClienteClick(Sender: TObject);
     procedure btnBuscaProdutosClick(Sender: TObject);
@@ -140,7 +139,6 @@ type
     procedure btnSalvarClick(Sender: TObject);
     procedure edtCodigoProdutoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure edtCodigoProdutoExit(Sender: TObject);
     procedure edtVlUnitKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure edtqtdeKeyDown(Sender: TObject; var Key: Word;
@@ -207,17 +205,17 @@ procedure TCadastroVenda.FormShow(Sender: TObject);
 begin
   if cadastrarOuEditar = 1 then
   begin
-
   try
-   CadastroVenda.MVenda.Open;
-   CadastroVenda.MVendasItens.Open;
-   CadastroVenda.MVendasItensGrid.open;
+   MVenda.Open;
+   MVendasItens.Open;
+   MVendasItensGrid.open;
 
-   CadastroVenda.MVenda.Append;
-   CadastroVenda.MVendasItens.Append;
-   CadastroVenda.MVendasItensGrid.Append;
+   MVenda.Append;
+   MVendasItens.Append;
+   MVendasItensGrid.Append;
    DtVenda.Date := NOW;
    ConsultaNumeroVenda;
+   Mvenda.FieldByName('NUMVENDA').AsInteger :=  nVenda;
    except
         on E: Exception do
       ShowMessage('Erro ao Ativar: ' + E.Message);
@@ -395,7 +393,7 @@ begin
   ConsultaNumeroVenda := TconsultaNumeroVenda.New;
   try
     ConsultaNumeroVenda.ConsultarNumeroVenda;
-    nVenda := (ConsultaNumeroVenda.NumeroVenda+1);
+    nVenda := (ConsultaNumeroVenda.NumeroVenda);
     pnlNumeroVenda.Caption := ('Venda N° : '+ IntToStr(nVenda));
   finally
     ConsultaNumeroVenda.Free;
@@ -454,10 +452,6 @@ case key of
   end;
 end;
 
-procedure TCadastroVenda.edtCodigoProdutoExit(Sender: TObject);
-begin
-ConsultaProdutoPorCodigo;
-end;
 
 procedure TCadastroVenda.edtCodigoProdutoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);

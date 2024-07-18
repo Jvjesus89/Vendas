@@ -46,7 +46,7 @@ procedure TVenda.btnCadastraVendaClick(Sender: TObject);
 begin
    {begin
     TCadastroVenda.New(Self)
-      .Embed(pnlMaster);
+     .Embed(pnlMaster);
     end;
     }
    CadastroVenda.Venda.Close;
@@ -59,7 +59,7 @@ begin
    CadastroVenda.VendasItens.sql.Add('select * from vendasitens v join produtos p on v.codprod = p.codprod where 1=2');
    CadastroVenda.VendasItens.open;
    CadastroVenda.cadastrarOuEditar := 1;
-   CadastroVenda.Showmodal;
+   CadastroVenda.ShowModal;
 end;
 
 procedure TVenda.btnConsultarVendasClick(Sender: TObject);
@@ -84,9 +84,17 @@ begin
    begin
     //TCadastroVenda.New(Self)
       //.Embed(pnlMaster);
-   CadastroVenda.cadastrarOuEditar := 2;
-   CadastroVenda.ShowModal;
-   edtconsultavenda.Text := '';
+      if (CadastroVenda.Venda.recordCount > 1) or (CadastroVenda.Venda.recordCount = 0) then
+       begin
+        TConsultaVendas.New(Self)
+        .Embed(pnlMaster);
+       end else
+       begin
+       CadastroVenda.cadastrarOuEditar := 2;
+       CadastroVenda.ShowModal;
+       edtconsultavenda.Text := '';
+       end;
+
     end;
 end;
 
@@ -108,7 +116,6 @@ end;
 procedure TVenda.FormShow(Sender: TObject);
 begin
   Responsive;
-
     try
     if not Db.DbPrincipal.Connected then
       Db.DbPrincipal.Open; // Abre a conexão com o banco de dados, se ainda não estiver aberta

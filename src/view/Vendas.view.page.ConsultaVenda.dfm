@@ -11,6 +11,7 @@ object ConsultaVendas: TConsultaVendas
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Visible = True
   OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
@@ -190,7 +191,6 @@ object ConsultaVendas: TConsultaVendas
         Caption = 'Num. Venda'
         TabOrder = 4
         VerticalAlignment = taAlignTop
-        ExplicitLeft = 96
         object edtnumvenda: TEdit
           Left = 0
           Top = 22

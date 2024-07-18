@@ -248,6 +248,8 @@ object CadastroVenda: TCadastroVenda
             ParentFont = False
             TabOrder = 0
             VerticalAlignment = taAlignTop
+            ExplicitLeft = -3
+            ExplicitTop = -6
             object edtCodigoProduto: TDBEdit
               Left = 0
               Top = 23
@@ -257,7 +259,6 @@ object CadastroVenda: TCadastroVenda
               DataField = 'CODIGO'
               DataSource = DsVendasItens
               TabOrder = 0
-              OnExit = edtCodigoProdutoExit
               OnKeyDown = edtCodigoProdutoKeyDown
             end
           end
@@ -367,7 +368,6 @@ object CadastroVenda: TCadastroVenda
               TabOrder = 0
               OnExit = edtDescontoExit
               OnKeyDown = edtDescontoKeyDown
-              ExplicitWidth = 96
             end
           end
           object Panel11: TPanel
@@ -518,8 +518,6 @@ object CadastroVenda: TCadastroVenda
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 467
-        ExplicitTop = 2
         object btnSalvar: TSpeedButton
           AlignWithMargins = True
           Left = 10
@@ -677,11 +675,6 @@ object CadastroVenda: TCadastroVenda
     Aggregates = <>
     FieldDefs = <
       item
-        Name = 'CODVENDA'
-        Attributes = [faRequired]
-        DataType = ftInteger
-      end
-      item
         Name = 'DTVENDA'
         DataType = ftDate
       end
@@ -691,40 +684,34 @@ object CadastroVenda: TCadastroVenda
       end
       item
         Name = 'CODCLI_1'
-        Attributes = [faReadonly]
         DataType = ftInteger
       end
       item
         Name = 'CODIGO'
-        Attributes = [faReadonly]
         DataType = ftInteger
       end
       item
         Name = 'RAZAO'
-        Attributes = [faReadonly]
         DataType = ftString
         Size = 100
       end
       item
         Name = 'FISICA_JURIDICA'
-        Attributes = [faReadonly, faFixed]
+        Attributes = [faFixed]
         DataType = ftString
         Size = 1
       end
       item
         Name = 'CPF_CNPJ'
-        Attributes = [faReadonly]
         DataType = ftString
         Size = 14
       end
       item
         Name = 'CODEND'
-        Attributes = [faReadonly]
         DataType = ftInteger
       end
       item
         Name = 'TELEFONE'
-        Attributes = [faReadonly]
         DataType = ftString
         Size = 15
       end
@@ -733,6 +720,14 @@ object CadastroVenda: TCadastroVenda
         DataType = ftFMTBcd
         Precision = 18
         Size = 2
+      end
+      item
+        Name = 'NUMVENDA'
+        DataType = ftInteger
+      end
+      item
+        Name = 'CODVENDA'
+        DataType = ftInteger
       end>
     IndexDefs = <>
     Params = <>
@@ -784,8 +779,13 @@ object CadastroVenda: TCadastroVenda
     end
     object MVendaTOTALVENDA: TFMTBCDField
       FieldName = 'TOTALVENDA'
+      Origin = 'TOTALVENDA'
       Precision = 18
       Size = 2
+    end
+    object MVendaNUMVENDA: TIntegerField
+      FieldName = 'NUMVENDA'
+      Origin = 'NUMVENDA'
     end
   end
   object DsVenda: TDataSource
@@ -807,9 +807,15 @@ object CadastroVenda: TCadastroVenda
       FieldName = 'CODPROD'
       Origin = 'CODPROD'
     end
-    object VendasItensVALORUNIT: TFMTBCDField
-      FieldName = 'VALORUNIT'
-      Origin = 'VALORUNIT'
+    object VendasItensQTDE: TFMTBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      Precision = 18
+      Size = 2
+    end
+    object VendasItensVLUNIT: TFMTBCDField
+      FieldName = 'VLUNIT'
+      Origin = 'VLUNIT'
       Precision = 18
       Size = 2
     end
@@ -830,32 +836,29 @@ object CadastroVenda: TCadastroVenda
       FieldName = 'CODPROD_1'
       Origin = 'CODPROD'
       ProviderFlags = []
+      ReadOnly = True
     end
     object VendasItensCODIGO: TIntegerField
       AutoGenerateValue = arDefault
       FieldName = 'CODIGO'
       Origin = 'CODIGO'
       ProviderFlags = []
+      ReadOnly = True
     end
     object VendasItensDESCRICAO: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'DESCRICAO'
       Origin = 'DESCRICAO'
       ProviderFlags = []
+      ReadOnly = True
       Size = 100
     end
-    object VendasItensVLUNIT: TFMTBCDField
+    object VendasItensVLUNIT_1: TFMTBCDField
       AutoGenerateValue = arDefault
-      FieldName = 'VLUNIT'
+      FieldName = 'VLUNIT_1'
       Origin = 'VLUNIT'
       ProviderFlags = []
-      currency = True
-      Precision = 18
-      Size = 2
-    end
-    object VendasItensQTDE: TFMTBCDField
-      FieldName = 'QTDE'
-      Origin = 'QTDE'
+      ReadOnly = True
       Precision = 18
       Size = 2
     end
@@ -869,11 +872,6 @@ object CadastroVenda: TCadastroVenda
     Aggregates = <>
     FieldDefs = <
       item
-        Name = 'CODVENDAITENS'
-        Attributes = [faRequired]
-        DataType = ftInteger
-      end
-      item
         Name = 'CODVENDA'
         DataType = ftInteger
       end
@@ -882,7 +880,13 @@ object CadastroVenda: TCadastroVenda
         DataType = ftInteger
       end
       item
-        Name = 'VALORUNIT'
+        Name = 'QTDE'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'VLUNIT'
         DataType = ftFMTBcd
         Precision = 18
         Size = 2
@@ -916,14 +920,8 @@ object CadastroVenda: TCadastroVenda
         Size = 100
       end
       item
-        Name = 'VLUNIT'
+        Name = 'VLUNIT_1'
         Attributes = [faReadonly]
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 2
-      end
-      item
-        Name = 'QTDE'
         DataType = ftFMTBcd
         Precision = 18
         Size = 2
@@ -936,58 +934,39 @@ object CadastroVenda: TCadastroVenda
     Top = 104
     object MVendasItensCODVENDA: TIntegerField
       FieldName = 'CODVENDA'
-      Origin = 'CODVENDA'
     end
     object MVendasItensCODPROD: TIntegerField
       FieldName = 'CODPROD'
-      Origin = 'CODPROD'
     end
-    object MVendasItensVALORUNIT: TFMTBCDField
-      FieldName = 'VALORUNIT'
-      Origin = 'VALORUNIT'
+    object MVendasItensQTDE: TFMTBCDField
+      FieldName = 'QTDE'
+      Precision = 18
+      Size = 2
+    end
+    object MVendasItensVLUNIT: TFMTBCDField
+      FieldName = 'VLUNIT'
       Precision = 18
       Size = 2
     end
     object MVendasItensDESCONTO: TFMTBCDField
       FieldName = 'DESCONTO'
-      Origin = 'DESCONTO'
       Precision = 18
       Size = 2
     end
     object MVendasItensVLTOTALITEM: TFMTBCDField
       FieldName = 'VLTOTALITEM'
-      Origin = 'VLTOTALITEM'
       Precision = 18
       Size = 2
     end
     object MVendasItensCODPROD_1: TIntegerField
       FieldName = 'CODPROD_1'
-      Origin = 'CODPROD'
-      ProviderFlags = []
     end
     object MVendasItensCODIGO: TIntegerField
       FieldName = 'CODIGO'
-      Origin = 'CODIGO'
-      ProviderFlags = []
     end
     object MVendasItensDESCRICAO: TStringField
       FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = []
       Size = 100
-    end
-    object MVendasItensVLUNIT: TFMTBCDField
-      FieldName = 'VLUNIT'
-      Origin = 'VLUNIT'
-      ProviderFlags = []
-      Precision = 18
-      Size = 2
-    end
-    object MVendasItensQTDE: TFMTBCDField
-      FieldName = 'QTDE'
-      Origin = 'QTDE'
-      Precision = 18
-      Size = 2
     end
   end
   object DsVendasItens: TDataSource
@@ -999,10 +978,6 @@ object CadastroVenda: TCadastroVenda
     Aggregates = <>
     FieldDefs = <
       item
-        Name = 'CODVENDAITENS'
-        DataType = ftInteger
-      end
-      item
         Name = 'CODVENDA'
         DataType = ftInteger
       end
@@ -1011,7 +986,13 @@ object CadastroVenda: TCadastroVenda
         DataType = ftInteger
       end
       item
-        Name = 'VALORUNIT'
+        Name = 'QTDE'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'VLUNIT'
         DataType = ftFMTBcd
         Precision = 18
         Size = 2
@@ -1030,25 +1011,23 @@ object CadastroVenda: TCadastroVenda
       end
       item
         Name = 'CODPROD_1'
+        Attributes = [faReadonly]
         DataType = ftInteger
       end
       item
         Name = 'CODIGO'
+        Attributes = [faReadonly]
         DataType = ftInteger
       end
       item
         Name = 'DESCRICAO'
+        Attributes = [faReadonly]
         DataType = ftString
         Size = 100
       end
       item
-        Name = 'VLUNIT'
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 2
-      end
-      item
-        Name = 'QTDE'
+        Name = 'VLUNIT_1'
+        Attributes = [faReadonly]
         DataType = ftFMTBcd
         Precision = 18
         Size = 2
@@ -1060,60 +1039,41 @@ object CadastroVenda: TCadastroVenda
     AfterPost = MVendasItensGridAfterPost
     Left = 704
     Top = 232
-    object IntegerField2: TIntegerField
+    object MVendasItensGridCODVENDA: TIntegerField
       FieldName = 'CODVENDA'
-      Origin = 'CODVENDA'
     end
-    object IntegerField3: TIntegerField
+    object MVendasItensGridCODPROD: TIntegerField
       FieldName = 'CODPROD'
-      Origin = 'CODPROD'
     end
-    object FMTBCDField1: TFMTBCDField
-      FieldName = 'VALORUNIT'
-      Origin = 'VALORUNIT'
-      Precision = 18
-      Size = 2
-    end
-    object FMTBCDField2: TFMTBCDField
-      FieldName = 'DESCONTO'
-      Origin = 'DESCONTO'
-      Precision = 18
-      Size = 2
-    end
-    object FMTBCDField3: TFMTBCDField
-      FieldName = 'VLTOTALITEM'
-      Origin = 'VLTOTALITEM'
-      Precision = 18
-      Size = 2
-    end
-    object IntegerField4: TIntegerField
-      FieldName = 'CODPROD_1'
-      Origin = 'CODPROD'
-      ProviderFlags = []
-    end
-    object IntegerField5: TIntegerField
-      FieldName = 'CODIGO'
-      Origin = 'CODIGO'
-      ProviderFlags = []
-    end
-    object StringField1: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      ProviderFlags = []
-      Size = 100
-    end
-    object FMTBCDField4: TFMTBCDField
-      FieldName = 'VLUNIT'
-      Origin = 'VLUNIT'
-      ProviderFlags = []
-      Precision = 18
-      Size = 2
-    end
-    object FMTBCDField5: TFMTBCDField
+    object MVendasItensGridQTDE: TFMTBCDField
       FieldName = 'QTDE'
-      Origin = 'QTDE'
       Precision = 18
       Size = 2
+    end
+    object MVendasItensGridVLUNIT: TFMTBCDField
+      FieldName = 'VLUNIT'
+      Precision = 18
+      Size = 2
+    end
+    object MVendasItensGridDESCONTO: TFMTBCDField
+      FieldName = 'DESCONTO'
+      Precision = 18
+      Size = 2
+    end
+    object MVendasItensGridVLTOTALITEM: TFMTBCDField
+      FieldName = 'VLTOTALITEM'
+      Precision = 18
+      Size = 2
+    end
+    object MVendasItensGridCODPROD_1: TIntegerField
+      FieldName = 'CODPROD_1'
+    end
+    object MVendasItensGridCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+    end
+    object MVendasItensGridDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Size = 100
     end
   end
   object DsMVendasItensGrid: TDataSource

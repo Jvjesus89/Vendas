@@ -111,7 +111,7 @@ procedure TconsultaNumeroVenda.ConsultarNumeroVenda;
 begin
 CadastroVenda.QConsultas.close;
 CadastroVenda.QConsultas.sql.clear;
-CadastroVenda.QConsultas.sql.add('select GEN_ID(GEN_VENDAS_NUMVENDA,0) as numerovenda from RDB$DATABASE');
+CadastroVenda.QConsultas.sql.add('select GEN_ID(GEN_VENDAS_NUMVENDA,1) as numerovenda from RDB$DATABASE');
 CadastroVenda.QConsultas.open;
 NumeroVenda :=  CadastroVenda.QConsultas.FieldByName('numerovenda').AsInteger;
 
